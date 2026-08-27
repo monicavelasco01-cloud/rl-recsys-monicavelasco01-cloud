@@ -1,0 +1,60 @@
+{
+  "modulo": "Aprendizaje por Refuerzo y Sistemas de Recomendacion",
+  "prueba": "Bloque 0 / N1",
+  "fecha": "2026-08-24T01:41:03+00:00",
+  "sistema": "Windows 11 (AMD64)",
+  "python": "3.12.14",
+  "superadas": 7,
+  "total": 8,
+  "codigo": "UPTC-RL-NO-78-ECB91B",
+  "detalle": [
+    {
+      "n": 1,
+      "titulo": "Python instalado y con version suficiente",
+      "ok": true,
+      "detalle": "Python 3.12.14 en Windows AMD64"
+    },
+    {
+      "n": 2,
+      "titulo": "Entorno virtual del proyecto activo",
+      "ok": true,
+      "detalle": "interprete en C:\\Users\\Usuario\\Downloads\\entrega\\plantilla-repo\\.venv  (es el .venv del proyecto)"
+    },
+    {
+      "n": 3,
+      "titulo": "Dependencias instaladas",
+      "ok": true,
+      "detalle": "numpy 2.5.2 · pyyaml 6.0.3 · matplotlib 3.11.1"
+    },
+    {
+      "n": 4,
+      "titulo": "El paquete 'rlrs' se importa",
+      "ok": true,
+      "detalle": "rlrs 0.1.0 desde src\\rlrs"
+    },
+    {
+      "n": 5,
+      "titulo": "El proyecto se ejecuta y da el resultado esperado",
+      "ok": true,
+      "detalle": "iteracion de valor converge en 35 barridos · tasa de exito 96%"
+    },
+    {
+      "n": 6,
+      "titulo": "Las pruebas automaticas pasan",
+      "ok": true,
+      "detalle": "..........................                                               [100%]"
+    },
+    {
+      "n": 7,
+      "titulo": "Git instalado y configurado",
+      "ok": true,
+      "detalle": "git version 2.53.0.windows.1 · JeolUPTC <jorge.otalora@uptc.edu.co>"
+    },
+    {
+      "n": 8,
+      "titulo": "El repositorio esta clonado y con remoto",
+      "ok": false,
+      "detalle": "esta carpeta no es un repositorio git"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# Configuracion de un experimento.
+#
+# Regla del curso: ningun numero magico dentro del codigo. Si un valor cambia
+# entre corridas, vive aqui. Asi el experimento queda descrito por un archivo
+# que se puede versionar, comparar y citar en el informe.
+
+nombre: base
+
+entorno:
+  n_rows: 4
+  n_cols: 5
+  noise: 0.2
+  step_reward: -0.04
+  max_steps: 100
+
+agente:
+  gamma: 0.9
+
+evaluacion:
+  episodios: 300
+  semilla_base: 0

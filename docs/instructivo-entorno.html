@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prepara tu entorno de trabajo · UPTC</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+/* El tema del curso (css/uptc-theme.css) esta pensado para las presentaciones y
+   fija html,body{height:100%; overflow:hidden}, que en un documento largo impide
+   el desplazamiento. Aqui se restablece el comportamiento normal de lectura.
+   Estas reglas van despues del <link>, asi que ganan por orden en la cascada. */
+html{height:auto;overflow:visible;scroll-behavior:smooth;scroll-padding-top:5.2rem;}
+/* Cuidado con overflow-x:hidden en el body: obliga a overflow-y a calcularse como
+   auto, el body pasa a ser contenedor de desplazamiento y la barra sticky deja de
+   fijarse a la ventana. El desbordamiento horizontal se controla en cada bloque
+   ancho (.tabla-wrap, .cod pre) con su propio overflow-x. */
+body.doc{height:auto;min-height:100%;overflow:visible;}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+
+:root{--g:#C48A11;--gd:#7C570A;--gt:#FCF3DC;--ink:#1A1A1A;--ink2:#3A3E45;--gray:#5F5F5F;
+--line:#E2E2E2;--paper:#FBFAF6;--card:#fff;--slate:#2C5B69;--slate-t:#E4EEF1;--flag:#A83E24;--flag-t:#FBEBE6;
+--serif:Cambria,Georgia,serif;--sans:-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"Cascadia Code",Consolas,monospace;
+--barra:4.2rem;}
+body.doc{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.62;}
+
+/* ---------- barra institucional persistente ---------- */
+.barra{position:sticky;top:0;z-index:50;background:var(--ink);border-bottom:3px solid var(--g);
+  box-shadow:0 2px 12px -6px rgba(0,0,0,.5);}
+.barra-in{max-width:1200px;margin:0 auto;height:var(--barra);padding:0 1.4rem;display:flex;align-items:center;gap:1rem;}
+/* El area de seguridad del logosimbolo se respeta con el padding vertical del
+   enlace: el manual de identidad pide un margen libre alrededor de la marca. */
+.marca{display:flex;align-items:center;padding:.5rem .1rem;flex:0 0 auto;}
+.marca img{height:2.5rem;width:auto;display:block;}
+.marca-sep{width:1px;height:2.1rem;background:rgba(255,255,255,.22);flex:0 0 auto;}
+.ident{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.1rem;flex:1 1 auto;}
+.ident-curso{font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:var(--g);font-weight:700;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ident-unidad{font-size:.84rem;color:#fff;font-weight:600;line-height:1.2;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.volver{flex:0 0 auto;display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;font-weight:600;
+  color:#e8e4d6;text-decoration:none;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:.3rem .8rem;}
+.volver:hover{color:var(--ink);background:var(--g);border-color:var(--g);}
+@media(max-width:820px){.ident-curso{display:none;} .volver-txt{display:none;} .volver{padding:.3rem .55rem;}}
+@media(max-width:560px){.marca img{height:2.05rem;} .barra-in{padding:0 .9rem;gap:.7rem;}}
+
+/* ---------- portada del documento (se desplaza con el contenido) ---------- */
+.portada{background:var(--card);border-bottom:1px solid var(--line);}
+.portada-in{max-width:1200px;margin:0 auto;padding:1.8rem 1.4rem 1.6rem;}
+.portada .eyebrow{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gd);margin:0 0 .5rem;font-weight:700;}
+.portada h1{font-family:var(--serif);font-size:clamp(1.6rem,3.4vw,2.3rem);line-height:1.12;margin:0 0 .2rem;max-width:24ch;color:var(--ink);}
+.doc-sub{color:var(--gray);font-size:.98rem;margin:0 0 .7rem;}
+.doc-lead{color:var(--ink2);max-width:62ch;margin:0;font-size:.97rem;}
+.doc-cuerpo{max-width:1200px;margin:0 auto;padding:2rem 1.4rem;display:grid;grid-template-columns:1fr;gap:2.5rem;}
+@media(min-width:1000px){.doc-cuerpo{grid-template-columns:14rem minmax(0,1fr);}}
+.doc-idx{display:none;}
+@media(min-width:1000px){.doc-idx{display:block;position:sticky;top:calc(var(--barra) + 1.2rem);align-self:start;max-height:calc(100vh - var(--barra) - 3rem);overflow-y:auto;}
+.doc-idx .idx-t{font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gray);margin:0 0 .6rem;}
+.doc-idx ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line);}
+.doc-idx a{display:flex;gap:.6rem;padding:.35rem .8rem;color:var(--gray);text-decoration:none;font-size:.82rem;border-left:2px solid transparent;margin-left:-1px;}
+.doc-idx a:hover{color:var(--ink);border-left-color:var(--g);}
+.doc-idx a span{font-family:var(--mono);font-size:.7rem;color:var(--gd);}}
+.doc-main{min-width:0;max-width:74ch;}
+.objetivos{background:var(--gt);border:1px solid var(--g);border-left:5px solid var(--gd);border-radius:8px;padding:1.1rem 1.4rem;margin-bottom:2rem;}
+.obj-t{font-family:var(--serif);font-size:1.02rem;margin:0 0 .5rem;color:var(--gd);}
+.objetivos ul{margin:0;padding-left:1.1rem;font-size:.93rem;}
+.objetivos li{margin-bottom:.35rem;}
+.sec-t{font-family:var(--serif);font-size:1.55rem;line-height:1.2;margin:2.6rem 0 .8rem;display:flex;gap:.7rem;align-items:baseline;border-bottom:1px solid var(--g);padding-bottom:.4rem;}
+.sec-n{font-family:var(--mono);font-size:.9rem;color:#fff;background:var(--ink);border-radius:4px;width:1.7rem;height:1.7rem;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.sub-t{font-family:var(--serif);font-size:1.12rem;margin:1.8rem 0 .5rem;color:var(--ink);}
+.cuerpo{margin:0 0 1em;}
+.lista{padding-left:1.2rem;margin:0 0 1.1em;}
+.lista li{margin-bottom:.4em;}
+.pasos{padding-left:0;list-style:none;counter-reset:pa;margin:1.2rem 0;}
+.pasos>li{counter-increment:pa;display:grid;grid-template-columns:2rem 1fr;gap:.9rem;margin-bottom:1.1rem;align-items:start;}
+.pasos>li::before{content:counter(pa);font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--gd);background:var(--gt);border:1px solid var(--g);border-radius:50%;width:1.9rem;height:1.9rem;display:flex;align-items:center;justify-content:center;}
+.paso-c>*:first-child{margin-top:0;}
+.paso-c>*:last-child{margin-bottom:0;}
+.tabla-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;margin:1.3rem 0;background:var(--card);}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:30rem;}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--ink);color:#fff;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;}
+tbody tr:nth-child(even){background:#FFFAF0;}
+tbody tr:last-child td{border-bottom:0;}
+.tabla-nota{font-size:.82rem;color:var(--gray);margin:-.7rem 0 1.2rem;}
+.callout{border-radius:0 6px 6px 0;padding:.9rem 1.2rem;margin:1.4rem 0;border-left:4px solid var(--g);background:var(--gt);}
+.callout.clave{border-left-color:var(--slate);background:var(--slate-t);}
+.callout.alerta{border-left-color:var(--flag);background:var(--flag-t);}
+.callout-t{font-weight:700;margin:0 0 .3rem;font-size:.94rem;}
+.callout-c{margin:0;font-size:.93rem;}
+.cod{margin:1.2rem 0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#1A1A1A;}
+.cod-cab{display:flex;justify-content:space-between;padding:.4rem .8rem;background:#26262A;color:#bbb;font-family:var(--mono);font-size:.72rem;}
+.cod-arch{color:var(--g);}
+.cod pre{margin:0;padding:.9rem 1rem;overflow-x:auto;}
+.cod code{font-family:var(--mono);font-size:.83rem;color:#EDEBE4;line-height:1.55;white-space:pre;}
+.cod-salida{margin:0;padding:.8rem 1rem;background:#101216;color:#9aa;border-top:1px solid #333;font-family:var(--mono);font-size:.78rem;overflow-x:auto;white-space:pre;}
+.eq{margin:1.4rem 0;padding:1rem 1.2rem;border:1px solid var(--line);border-left:4px solid var(--slate);border-radius:0 6px 6px 0;background:var(--card);}
+.eq-tex{font-size:1.05rem;text-align:center;padding:.4rem 0;overflow-x:auto;}
+.eq-lee{font-size:.9rem;color:var(--ink2);font-style:italic;text-align:center;margin:.3rem 0 0;}
+.eq-inst{margin-top:.8rem;padding-top:.7rem;border-top:1px dashed var(--line);font-size:.9rem;}
+.eq-inst-t{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--slate);margin-bottom:.25rem;}
+.termino{display:grid;grid-template-columns:1fr;gap:.2rem;border-left:3px solid var(--g);padding:.5rem .9rem;margin:1rem 0;background:var(--card);}
+.term-n{font-weight:700;font-size:.93rem;}
+.term-d{font-size:.9rem;color:var(--ink2);}
+.actividad{border:1.5px solid var(--ink);border-radius:8px;margin:1.5rem 0;overflow:hidden;background:var(--card);}
+.act-cab{background:var(--ink);color:var(--g);padding:.45rem .9rem;display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.act-meta{color:#bbb;}
+.act-t{font-family:var(--serif);font-size:1.05rem;margin:.8rem .9rem .3rem;}
+.act-c{padding:0 .9rem;font-size:.93rem;}
+.actividad .lista{padding:0 .9rem 0 2rem;font-size:.93rem;}
+.plat{border:1px solid var(--line);border-radius:8px;margin:1.3rem 0;overflow:hidden;background:var(--card);}
+.pl-tabs{display:flex;background:#F3F1EA;border-bottom:1px solid var(--line);}
+.pl-tab{flex:1;padding:.6rem .8rem;border:0;background:transparent;font-family:var(--sans);font-size:.85rem;font-weight:600;color:var(--gray);cursor:pointer;border-bottom:3px solid transparent;}
+.pl-tab:hover{color:var(--ink);}
+.pl-tab.on{color:var(--ink);border-bottom-color:var(--g);background:var(--card);}
+.pl-pan{display:none;padding:1rem 1.1rem;}
+.pl-pan.on{display:block;}
+.pl-pan>*:first-child{margin-top:0;}
+.pl-pan>*:last-child{margin-bottom:0;}
+.widget{border:1.5px solid var(--g);border-radius:8px;margin:1.5rem 0;background:var(--card);overflow:hidden;}
+.wid-cab{display:flex;justify-content:space-between;align-items:center;padding:.5rem .9rem;border-bottom:1px solid var(--line);}
+.wid-t{font-family:var(--serif);font-weight:700;font-size:1rem;}
+.wid-b{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gd);background:var(--gt);border:1px solid var(--g);border-radius:99px;padding:.1rem .5rem;}
+.wid-d{padding:.7rem .9rem 0;margin:0;font-size:.9rem;color:var(--ink2);}
+.wid-host{padding:.9rem;}
+.wid-alt{margin:0;font-size:.88rem;color:var(--gray);font-style:italic;}
+.fig{margin:1.4rem 0;text-align:center;}
+.fig img{max-width:100%;border:1px solid var(--line);border-radius:6px;}
+.fig figcaption{font-size:.84rem;color:var(--gray);margin-top:.5rem;}
+.refs{font-size:.87rem;color:var(--ink2);padding-left:1.2rem;}
+.refs li{margin-bottom:.4em;}
+.sep{border:0;border-top:1px solid var(--line);margin:2.2rem 0;}
+code{font-family:var(--mono);font-size:.87em;background:#F3F1EA;border:1px solid var(--line);border-radius:3px;padding:.05em .3em;}
+/* El estilo de codigo EN LINEA no debe alcanzar al codigo dentro de un bloque:
+   ahi el fondo es oscuro y el recuadro claro dejaba el texto ilegible. */
+.cod pre code{background:none;border:0;border-radius:0;padding:0;}
+a{color:var(--slate);}
+.doc-pie{border-top:3px solid var(--g);margin-top:3rem;padding:1.2rem 1.4rem;font-size:.8rem;color:var(--gray);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;max-width:1200px;margin-left:auto;margin-right:auto;}
+@media print{.doc-idx,.pl-tabs,.volver{display:none;}.pl-pan{display:block!important;}
+  .barra{position:static;}.doc-cuerpo{display:block;}}
+</style>
+</head>
+<body class="doc">
+
+<header class="barra">
+  <div class="barra-in">
+    <a class="marca" href="../../index.html" aria-label="Inicio del curso">
+      <img src="../../assets/uptc-blanco.svg" alt="Universidad Pedagógica y Tecnológica de Colombia">
+    </a>
+    <span class="marca-sep" aria-hidden="true"></span>
+    <div class="ident">
+      <span class="ident-curso">Aprendizaje por Refuerzo y Sistemas de Recomendación</span>
+      <span class="ident-unidad">Bloque 0 · N1 · Prepara tu entorno</span>
+    </div>
+    <a class="volver" href="../../index.html"><span aria-hidden="true">&#8592;</span><span class="volver-txt">Inicio del curso</span></a>
+  </div>
+</header>
+
+<div class="portada">
+  <div class="portada-in">
+    <p class="eyebrow">Bloque 0 · N1 · Preparación</p>
+    <h1>Prepara tu entorno de trabajo</h1>
+    <p class="doc-sub">Antes del viernes 28 de agosto</p>
+    <p class="doc-lead">Instalar Python, Git y el editor; crear tu repositorio del curso; y comprobar con una sola orden que todo funciona. Cuando el verificador muestre <strong>8 de 8</strong>, estás listo. La primera sesión empieza con contenido, no con instalaciones.</p>
+  </div>
+</div>
+
+<div class="doc-cuerpo">
+  <nav class="doc-idx" aria-label="Contenido"><p class="idx-t">Contenido</p><ol><li><a href="#s1"><span>01</span>Antes de empezar</a></li><li><a href="#s2"><span>02</span>Instalar uv</a></li><li><a href="#s3"><span>03</span>Instalar Git</a></li><li><a href="#s4"><span>04</span>Configurar tu identidad en Git</a></li><li><a href="#s5"><span>05</span>Instalar VS Code</a></li><li><a href="#s6"><span>06</span>Conectar tu cuenta de GitHub</a></li><li><a href="#s7"><span>07</span>Crear tu repositorio del curso</a></li><li><a href="#s8"><span>08</span>Crear el entorno y ejecutar el proyecto</a></li><li><a href="#s9"><span>09</span>La prueba de paso</a></li><li><a href="#s10"><span>10</span>Dejar constancia</a></li><li><a href="#s11"><span>11</span>Si algo falla</a></li><li><a href="#s12"><span>12</span>Qué acabas de montar, y por qué así</a></li><li><a href="#s13"><span>13</span>Para seguir</a></li></ol></nav>
+  <main class="doc-main">
+    <section class="objetivos">
+      <h2 class="obj-t">Al terminar, deberías poder</h2>
+      <ul><li><strong>Instalar</strong> <code>uv</code>, la herramienta que gestiona Python, el entorno virtual y las dependencias con un solo comando.</li><li><strong>Configurar</strong> Git con tu identidad, para que tus aportes al proyecto queden correctamente atribuidos.</li><li><strong>Conectar</strong> tu cuenta de GitHub y <strong>crear</strong> tu repositorio personal del curso a partir de la plantilla.</li><li><strong>Ejecutar</strong> las pruebas automáticas del proyecto y ver la salida esperada.</li><li><strong>Superar</strong> la prueba de paso y dejar constancia de ello en tu repositorio.</li></ul>
+    </section>
+    <h2 id="s1" class="sec-t"><span class="sec-n">1</span>Antes de empezar</h2>
+<p class="cuerpo">Este instructivo tiene dos recorridos. Si ya trabajas habitualmente con Python, Git y un editor, te llevará unos <strong>45 minutos</strong> y buena parte serán comprobaciones. Si vas a instalar estas herramientas por primera vez, o hace tiempo que no lo haces, calcula <strong>entre dos y tres horas</strong> y hazlo con calma: no hay ninguna prisa y el resultado es el mismo.</p>
+<p class="cuerpo">Lo único que importa es llegar al viernes 28 con la prueba de paso superada. Si te atascas, escribe al canal del curso con el mensaje de error completo: casi todos los problemas de instalación son de cinco minutos cuando alguien más los ha visto antes.</p>
+<div class="callout clave">
+        <p class="callout-t">La vía rápida</p>
+        <p class="callout-c">Si ya tienes <code>uv</code>, Git y VS Code funcionando, empieza en <strong>«Conectar tu cuenta de GitHub»</strong>. Todo lo anterior es instalación; lo que de verdad hay que hacer empieza ahí.</p>
+      </div>
+<h2 id="s2" class="sec-t"><span class="sec-n">2</span>Instalar uv</h2>
+<p class="cuerpo"><code>uv</code> es una sola herramienta que hace lo que antes exigían cuatro: instala la versión de Python que el proyecto necesita, crea el entorno virtual, resuelve las dependencias y las fija en un archivo de bloqueo. No hace falta instalar Python por separado, ni Anaconda, ni pip, ni virtualenv.</p>
+<p class="cuerpo">Elegimos <code>uv</code> en vez de Anaconda por tres razones: es mucho más rápido, produce entornos <strong>reproducibles</strong> gracias al archivo <code>uv.lock</code>, y son ocho comandos en total en vez de dos ecosistemas paralelos que hay que aprender a no mezclar.</p>
+<h3 class="sub-t">Instalación según tu sistema</h3>
+        <div class="plat"><div class="pl-tabs"><button type="button" class="pl-tab on" data-g="pl0" data-k="windows">Windows</button><button type="button" class="pl-tab" data-g="pl0" data-k="macos">macOS</button><button type="button" class="pl-tab" data-g="pl0" data-k="linux">Linux</button></div><div class="pl-pan on" data-g="pl0" data-k="windows"><p class="cuerpo">Abre <strong>PowerShell</strong> (menú Inicio → escribe «PowerShell») y pega:</p><div class="cod"><pre><code>powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</code></pre></div><p class="cuerpo">Si prefieres el gestor de paquetes de Windows, esta alternativa es equivalente:</p><div class="cod"><pre><code>winget install --id=astral-sh.uv -e</code></pre></div><div class="callout alerta">
+        <p class="callout-t">Importante</p>
+        <p class="callout-c">Al terminar, <strong>cierra PowerShell y vuelve a abrirlo</strong>. El instalador modifica el PATH y la ventana actual no se entera. Es el motivo número uno de «me dice que uv no existe».</p>
+      </div></div><div class="pl-pan" data-g="pl0" data-k="macos"><p class="cuerpo">Abre la <strong>Terminal</strong> (Cmd+Espacio → «Terminal») y pega:</p><div class="cod"><pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre></div><p class="cuerpo">Si usas Homebrew, esta alternativa es equivalente:</p><div class="cod"><pre><code>brew install uv</code></pre></div><div class="callout alerta">
+        <p class="callout-t">Importante</p>
+        <p class="callout-c">Al terminar, <strong>cierra la Terminal y vuelve a abrirla</strong> para que reconozca el nuevo comando.</p>
+      </div></div><div class="pl-pan" data-g="pl0" data-k="linux"><p class="cuerpo">Abre una terminal y pega:</p><div class="cod"><pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre></div><div class="callout alerta">
+        <p class="callout-t">Importante</p>
+        <p class="callout-c">Al terminar, <strong>cierra la terminal y vuelve a abrirla</strong>, o ejecuta <code>source ~/.bashrc</code>, para que reconozca el nuevo comando.</p>
+      </div></div></div>
+<p class="cuerpo">Comprueba que quedó instalado. Debe responder con un número de versión:</p>
+<div class="cod"><pre><code>uv --version</code></pre><pre class="cod-salida">uv 0.8.17</pre></div>
+<p class="cuerpo">Y pídele la versión de Python que usaremos. Si ya la tienes, no hará nada; si no, la descarga:</p>
+<div class="cod"><pre><code>uv python install 3.12</code></pre></div>
+<h2 id="s3" class="sec-t"><span class="sec-n">3</span>Instalar Git</h2>
+<p class="cuerpo">Git registra la historia del proyecto y permite que tres personas trabajen sobre el mismo código sin pisarse. En este módulo es además la evidencia de tu aporte individual dentro del equipo, así que no es opcional.</p>
+
+        <div class="plat"><div class="pl-tabs"><button type="button" class="pl-tab on" data-g="pl1" data-k="windows">Windows</button><button type="button" class="pl-tab" data-g="pl1" data-k="macos">macOS</button><button type="button" class="pl-tab" data-g="pl1" data-k="linux">Linux</button></div><div class="pl-pan on" data-g="pl1" data-k="windows"><div class="cod"><pre><code>winget install --id Git.Git -e</code></pre></div><p class="cuerpo">Si prefieres el instalador gráfico, descárgalo de <a href="https://git-scm.com/download/win">git-scm.com</a> y acepta todas las opciones por defecto. Vuelve a abrir PowerShell al terminar.</p></div><div class="pl-pan" data-g="pl1" data-k="macos"><p class="cuerpo">La forma más simple, que además instala las herramientas de desarrollo de Apple:</p><div class="cod"><pre><code>xcode-select --install</code></pre></div><p class="cuerpo">O bien, con Homebrew:</p><div class="cod"><pre><code>brew install git</code></pre></div></div><div class="pl-pan" data-g="pl1" data-k="linux"><p class="cuerpo">En Ubuntu, Debian o derivados:</p><div class="cod"><pre><code>sudo apt update &amp;&amp; sudo apt install -y git</code></pre></div><p class="cuerpo">En Fedora:</p><div class="cod"><pre><code>sudo dnf install -y git</code></pre></div></div></div>
+<div class="cod"><pre><code>git --version</code></pre><pre class="cod-salida">git version 2.43.0</pre></div>
+<h2 id="s4" class="sec-t"><span class="sec-n">4</span>Configurar tu identidad en Git</h2>
+<p class="cuerpo">Cada cambio que hagas quedará firmado con este nombre y este correo. Sin configurarlos, Git se niega a guardar nada, así que este paso no se puede saltar.</p>
+<div class="cod"><pre><code>git config --global user.name &quot;Tu Nombre Completo&quot;
+git config --global user.email &quot;tucorreo@uptc.edu.co&quot;</code></pre></div>
+<div class="callout alerta">
+        <p class="callout-t">Usa el mismo correo de tu cuenta de GitHub</p>
+        <p class="callout-c">Si no coinciden, tus aportes aparecerán como de un desconocido y no se te atribuirán en las estadísticas del repositorio. Dado que parte de la evaluación individual sale de ahí, conviene comprobarlo ahora.</p>
+      </div>
+<div class="cod"><pre><code>git config --get user.name
+git config --get user.email</code></pre></div>
+<h2 id="s5" class="sec-t"><span class="sec-n">5</span>Instalar VS Code</h2>
+<p class="cuerpo">VS Code ejecuta archivos <code>.py</code> y notebooks <code>.ipynb</code> <strong>en la misma ventana</strong>, con depurador. Es la razón por la que en este curso no hay que elegir entre «programar en un IDE» y «explorar en un notebook»: se hacen las dos cosas sin cambiar de herramienta.</p>
+
+        <div class="plat"><div class="pl-tabs"><button type="button" class="pl-tab on" data-g="pl2" data-k="windows">Windows</button><button type="button" class="pl-tab" data-g="pl2" data-k="macos">macOS</button><button type="button" class="pl-tab" data-g="pl2" data-k="linux">Linux</button></div><div class="pl-pan on" data-g="pl2" data-k="windows"><div class="cod"><pre><code>winget install --id Microsoft.VisualStudioCode -e</code></pre></div></div><div class="pl-pan" data-g="pl2" data-k="macos"><div class="cod"><pre><code>brew install --cask visual-studio-code</code></pre></div><p class="cuerpo">O descárgalo de <a href="https://code.visualstudio.com/">code.visualstudio.com</a>.</p></div><div class="pl-pan" data-g="pl2" data-k="linux"><div class="cod"><pre><code>sudo snap install code --classic</code></pre></div><p class="cuerpo">O descarga el paquete <code>.deb</code> o <code>.rpm</code> de <a href="https://code.visualstudio.com/">code.visualstudio.com</a>.</p></div></div>
+<p class="cuerpo">Abre VS Code y añade tres extensiones. Icono de extensiones en la barra izquierda (o Ctrl+Shift+X / Cmd+Shift+X), busca cada una por su identificador y pulsa <em>Install</em>:</p>
+<div class="tabla-wrap"><table><thead><tr><th>Extensión</th><th>Identificador</th><th>Para qué</th></tr></thead><tbody><tr><td>Python</td><td><code>ms-python.python</code></td><td>Ejecutar y depurar código Python; detectar el entorno del proyecto.</td></tr><tr><td>Jupyter</td><td><code>ms-toolsai.jupyter</code></td><td>Abrir y ejecutar notebooks dentro del editor.</td></tr><tr><td>Ruff</td><td><code>charliermarsh.ruff</code></td><td>Revisar el estilo y formatear al guardar.</td></tr></tbody></table></div>
+<h2 id="s6" class="sec-t"><span class="sec-n">6</span>Conectar tu cuenta de GitHub</h2>
+<p class="cuerpo">Configurar tu nombre y tu correo, como acabas de hacer, sirve para <strong>firmar</strong> los cambios. Es algo distinto de <strong>autenticarte</strong>, que es lo que GitHub te va a exigir cuando envíes tu trabajo. Desde 2021 GitHub no acepta la contraseña de la cuenta desde la terminal, así que hay que conectar el equipo una sola vez.</p>
+<p class="cuerpo">La forma más simple y que funciona igual en los tres sistemas es <strong>GitHub CLI</strong>: se instala una vez, se abre el navegador para iniciar sesión, y a partir de ahí Git deja de pedir credenciales. Si te saltas este paso, todo funcionará hasta el momento de enviar tu trabajo, y ahí se detendrá.</p>
+<h3 class="sub-t">Instalar GitHub CLI</h3>
+        <div class="plat"><div class="pl-tabs"><button type="button" class="pl-tab on" data-g="pl3" data-k="windows">Windows</button><button type="button" class="pl-tab" data-g="pl3" data-k="macos">macOS</button><button type="button" class="pl-tab" data-g="pl3" data-k="linux">Linux</button></div><div class="pl-pan on" data-g="pl3" data-k="windows"><div class="cod"><pre><code>winget install --id GitHub.cli -e</code></pre></div><p class="cuerpo">Cierra PowerShell y vuelve a abrirlo al terminar.</p></div><div class="pl-pan" data-g="pl3" data-k="macos"><div class="cod"><pre><code>brew install gh</code></pre></div><p class="cuerpo">Si no usas Homebrew, descárgalo de <a href="https://cli.github.com/">cli.github.com</a>.</p></div><div class="pl-pan" data-g="pl3" data-k="linux"><div class="cod"><pre><code>sudo apt update &amp;&amp; sudo apt install -y gh</code></pre></div><p class="cuerpo">En Fedora: <code>sudo dnf install -y gh</code>. Otras distribuciones en <a href="https://cli.github.com/">cli.github.com</a>.</p></div></div>
+<p class="cuerpo">Ahora inicia sesión. Responde <strong>GitHub.com</strong>, luego <strong>HTTPS</strong>, contesta <strong>Yes</strong> cuando pregunte si quieres autenticar Git con tus credenciales, y elige <strong>Login with a web browser</strong>. Te dará un código de ocho caracteres: cópialo, pulsa Enter y pégalo en la página que se abre.</p>
+<div class="cod"><pre><code>gh auth login</code></pre></div>
+<p class="cuerpo">Comprueba que quedó conectado:</p>
+<div class="cod"><pre><code>gh auth status</code></pre><pre class="cod-salida">github.com
+  ✓ Logged in to github.com account tu-usuario (keyring)
+  - Active account: true
+  - Git operations protocol: https</pre></div>
+<h2 id="s7" class="sec-t"><span class="sec-n">7</span>Crear tu repositorio del curso</h2>
+<p class="cuerpo">Conviene entender primero cómo están organizados los repositorios del módulo, porque hay tres cosas distintas y es fácil confundirlas:</p>
+<div class="tabla-wrap"><table><thead><tr><th>Repositorio</th><th>De quién es</th><th>Para qué</th></tr></thead><tbody><tr><td><strong>Plantilla del curso</strong></td><td>Del docente. Tú solo lo lees.</td><td>Contiene el punto de partida: el paquete, las pruebas y los guiones. Nunca escribes en él.</td></tr><tr><td><strong>Tu repositorio personal</strong></td><td>Tuyo. Lo creas en este paso.</td><td>Es donde haces el Bloque 0 y tus ejercicios individuales. Aquí subes la evidencia de N1.</td></tr><tr><td><strong>Repositorio del equipo</strong></td><td>Del equipo. Se crea en la sesión 1.</td><td>Ahí vive el proyecto del módulo. Todavía no existe, y no hace falta para N1.</td></tr></tbody></table></div><p class="tabla-nota">En este paso creas <strong>el tuyo personal</strong>, a partir de la plantilla. Los equipos aún no están conformados, así que el repositorio de equipo llegará más adelante.</p>
+<h3 class="sub-t">Crear tu copia a partir de la plantilla</h3>
+      <ol class="pasos"><li><div class="paso-c"><p class="cuerpo">Abre la plantilla del curso en el navegador, con tu sesión de GitHub iniciada: <a href="https://github.com/JeolUPTC/curso-rl-recsys">github.com/JeolUPTC/curso-rl-recsys</a></p></div></li><li><div class="paso-c"><p class="cuerpo">Pulsa el botón verde <strong>Use this template</strong> (arriba a la derecha) y elige <strong>Create a new repository</strong>. No uses <em>Fork</em> ni <em>Code → Download ZIP</em>.</p></div></li><li><div class="paso-c"><p class="cuerpo">Como propietario deja <strong>tu propia cuenta</strong>. Ponle de nombre <code>rl-recsys-tu-usuario</code>, sustituyendo <code>tu-usuario</code> por tu nombre de usuario de GitHub. Déjalo <strong>Public</strong> y pulsa <strong>Create repository</strong>.</p><div class="callout info">
+        <p class="callout-t">¿Público o privado?</p>
+        <p class="callout-c">Público es lo más simple: basta con entregar la dirección y el docente puede verlo. Aquí no hay nada delicado, solo tu entorno de trabajo, y con el tiempo estos repositorios forman tu portafolio. Si aun así prefieres tenerlo privado, créalo como <strong>Private</strong> y añade al docente en <strong>Settings → Collaborators → Add people</strong>, escribiendo <code>JeolUPTC</code>.</p>
+      </div></div></li><li><div class="paso-c"><p class="cuerpo">Ahora clónalo a tu equipo. Colócate primero donde quieras guardar el proyecto:</p><div class="cod"><div class="cod-cab"><span class="cod-arch">Sustituye tu-usuario por el tuyo</span><span class="cod-len">bash</span></div><pre><code>cd ~/Documentos       # en Windows suele ser:  cd $HOME\Documents
+git clone https://github.com/tu-usuario/rl-recsys-tu-usuario.git
+cd rl-recsys-tu-usuario</code></pre></div></div></li></ol>
+<div class="callout info">
+        <p class="callout-t">Atajo, si prefieres la terminal</p>
+        <p class="callout-c">Con GitHub CLI ya instalado, los pasos anteriores caben en una sola orden: <code>gh repo create rl-recsys-tu-usuario --template JeolUPTC/curso-rl-recsys --public --clone</code>. Cambia <code>--public</code> por <code>--private</code> si prefieres tenerlo privado.</p>
+      </div>
+<div class="callout alerta">
+        <p class="callout-t">No descargues el ZIP</p>
+        <p class="callout-c">El botón «Download ZIP» de GitHub entrega los archivos sin la historia del repositorio. La prueba de paso lo detecta y falla, porque sin repositorio no hay forma de registrar tu trabajo ni de colaborar con tu equipo. Por la misma razón, tampoco sirve clonar directamente la plantilla del docente: no podrías subir nada a ella.</p>
+      </div>
+<h2 id="s8" class="sec-t"><span class="sec-n">8</span>Crear el entorno y ejecutar el proyecto</h2>
+<p class="cuerpo">Un solo comando lee <code>pyproject.toml</code>, descarga Python 3.12 si hace falta, crea la carpeta <code>.venv</code> dentro del proyecto e instala todo lo necesario. La primera vez tarda entre uno y tres minutos:</p>
+<div class="cod"><pre><code>uv sync</code></pre></div>
+<p class="cuerpo">A partir de aquí, <strong>antepón `uv run` a todo lo que ejecutes</strong>. Eso garantiza que se use el entorno del proyecto y no el Python que tengas suelto en el sistema, que es la causa más habitual del clásico «en mi máquina sí funcionaba».</p>
+<div class="cod"><pre><code>uv run pytest -q</code></pre><pre class="cod-salida">26 passed in 0.61s</pre></div>
+<p class="cuerpo">Y ahora ejecuta el experimento de ejemplo, que resuelve un pequeño problema de decisión:</p>
+<div class="cod"><pre><code>uv run python experiments/run.py</code></pre><pre class="cod-salida">Experimento 'base'  ·  gamma = 0.9  ·  35 barridos hasta converger
+
++0.48&gt;  +0.61&gt;  +0.75&gt;  +0.93&gt;   +1
++0.37^    ###   +0.61^  +0.59^   -1
++0.28^  +0.36&gt;  +0.47^    ###   +0.10v
++0.21^  +0.27^  +0.35^  +0.26&lt;  +0.17&lt;
+
+  optima         retorno +0.636 [+0.603, +0.670]  exito 98.0%  pasos   9.1
+  aleatoria      retorno -2.520 [-2.679, -2.361]  exito 25.7%  pasos  56.8</pre></div>
+<p class="cuerpo">Si ves exactamente esos números, tu entorno reproduce el resultado de referencia. No hace falta que entiendas todavía qué significan: son el contenido de la sesión 4. Pero fíjate en una cosa: cada resultado viene con su intervalo entre corchetes. En este curso ningún número se reporta solo.</p>
+<h2 id="s9" class="sec-t"><span class="sec-n">9</span>La prueba de paso</h2>
+<p class="cuerpo">Este guion comprueba las ocho condiciones necesarias para empezar el módulo y te dice exactamente cuál falla y cómo resolverla. No modifica nada, así que puedes ejecutarlo tantas veces como quieras:</p>
+<div class="cod"><pre><code>uv run python scripts/verificar.py</code></pre></div>
+<div class="cod"><div class="cod-cab"><span class="cod-arch">Salida esperada cuando todo está listo</span><span class="cod-len">text</span></div><pre><code>  UPTC · Especializacion en Inteligencia Artificial
+  Bloque 0 · N1 · Prueba de paso del entorno
+  ----------------------------------------------------------------
+
+ [ OK  ]  1. Python instalado y con version suficiente
+ [ OK  ]  2. Entorno virtual del proyecto activo
+ [ OK  ]  3. Dependencias instaladas
+ [ OK  ]  4. El paquete 'rlrs' se importa
+ [ OK  ]  5. El proyecto se ejecuta y da el resultado esperado
+ [ OK  ]  6. Las pruebas automaticas pasan
+ [ OK  ]  7. Git instalado y configurado
+ [ OK  ]  8. El repositorio esta clonado y con remoto
+
+  8 de 8 comprobaciones superadas. Tu entorno esta listo.
+
+  Codigo de verificacion:  UPTC-RL-OK-88-EEF195</code></pre></div>
+<div class="callout info">
+        <p class="callout-t">Si no salen las ocho</p>
+        <p class="callout-c">Cada línea en rojo trae debajo la instrucción concreta para arreglarla. Resuelve una, vuelve a ejecutar, y repite. Es normal necesitar dos o tres intentos.</p>
+      </div>
+<h2 id="s10" class="sec-t"><span class="sec-n">10</span>Dejar constancia</h2>
+<p class="cuerpo">El verificador escribe un archivo <code>entorno_verificado.json</code> con el resultado y los datos de tu máquina. Súbelo a tu repositorio: será tu primer <em>commit</em> del curso y de paso comprueba que Git funciona de principio a fin.</p>
+<div class="cod"><pre><code>git add entorno_verificado.json
+git commit -m &quot;Entorno verificado&quot;
+git push</code></pre></div>
+<div class="actividad">
+        <div class="act-cab"><span class="act-num">Actividad 1</span><span class="act-meta">Antes del 28 de agosto</span></div>
+        <h4 class="act-t">Entrega de N1</h4>
+        <div class="act-c"><p>Cuando el verificador muestre 8 de 8 y hayas subido el archivo, entra a Moodle y responde el cuestionario <strong>«N1 · Entorno listo»</strong> con dos datos: el <strong>código de verificación</strong> que te mostró la pantalla y la <strong>dirección de tu repositorio</strong> (<code>https://github.com/tu-usuario/rl-recsys-tu-usuario</code>).</p></div>
+        <ul class="lista"><li>El código confirma que las ocho comprobaciones pasaron.</li><li>El archivo en tu repositorio es la evidencia real, con la fecha y las características de tu equipo.</li><li>Si creaste el repositorio como privado, comprueba que añadiste a <code>JeolUPTC</code> como colaborador; de lo contrario será invisible para el docente.</li><li>Si no llegas a tiempo, avisa igualmente: es mucho mejor resolverlo el jueves que el viernes a las seis de la tarde.</li></ul>
+      </div>
+<h2 id="s11" class="sec-t"><span class="sec-n">11</span>Si algo falla</h2>
+<div class="tabla-wrap"><table><thead><tr><th>Lo que ves</th><th>Qué ocurre</th><th>Cómo se arregla</th></tr></thead><tbody><tr><td><code>uv: command not found</code> o <code>no se reconoce como un comando</code></td><td>La terminal aún no conoce el comando recién instalado.</td><td>Cierra la terminal por completo y ábrela de nuevo. Si persiste, reinicia el equipo.</td></tr><tr><td><code>Permission denied</code> o <code>Repository not found</code> al clonar</td><td>El repositorio es privado y tu equipo no está autenticado, o la dirección tiene una errata.</td><td>Ejecuta <code>gh auth login</code> y comprueba la dirección copiándola del botón verde <strong>Code</strong> de tu repositorio.</td></tr><tr><td>Al hacer <code>git push</code> pide usuario y contraseña, y la contraseña no funciona</td><td>GitHub no acepta la contraseña de la cuenta desde la terminal.</td><td>Es lo que resuelve el paso de conectar la cuenta: ejecuta <code>gh auth login</code> y vuelve a intentarlo.</td></tr><tr><td>En GitHub no aparece el botón <strong>Use this template</strong></td><td>No has iniciado sesión, o estás mirando un repositorio que no es la plantilla del curso.</td><td>Inicia sesión en GitHub y vuelve a abrir el enlace de la plantilla que aparece en «Crear tu repositorio del curso».</td></tr><tr><td><code>Please tell me who you are</code></td><td>Falta configurar <code>user.name</code> o <code>user.email</code>.</td><td>Repite el paso 3 completo.</td></tr><tr><td><code>uv sync</code> se queda colgado o falla al descargar</td><td>Red inestable, o un proxy o antivirus corporativo interfiriendo.</td><td>Vuelve a ejecutarlo: retoma donde se quedó. Si estás en una red de empresa, prueba desde otra red.</td></tr><tr><td>Comprobación 2 en rojo, con las demás en verde</td><td>Estás ejecutando el guion con el Python del sistema en vez del entorno del proyecto.</td><td>Antepón <code>uv run</code>: <code>uv run python scripts/verificar.py</code>.</td></tr><tr><td>Comprobación 8 en rojo: «sin remoto configurado»</td><td>Descargaste el ZIP en lugar de clonar.</td><td>Borra la carpeta y repite «Crear tu repositorio del curso»: créalo desde la plantilla y clónalo.</td></tr><tr><td>VS Code no encuentra el intérprete</td><td>El editor no ha detectado el entorno del proyecto.</td><td>Ctrl+Shift+P → «Python: Select Interpreter» → elige el que está dentro de <code>.venv</code> del proyecto.</td></tr></tbody></table></div><p class="tabla-nota">Si tu problema no está aquí, escribe al canal del curso pegando el <strong>mensaje de error completo</strong>, no un resumen. La mitad de la solución suele estar en la línea que uno decide no copiar.</p>
+<h2 id="s12" class="sec-t"><span class="sec-n">12</span>Qué acabas de montar, y por qué así</h2>
+<div class="tabla-wrap"><table><thead><tr><th>Pieza</th><th>Qué resuelve</th></tr></thead><tbody><tr><td><strong>uv</strong></td><td>Una sola herramienta para Python, entorno y dependencias, con archivo de bloqueo. Reproducibilidad sin ceremonia.</td></tr><tr><td><strong>Entorno virtual del proyecto</strong></td><td>Lo que instales aquí no afecta a nada más de tu máquina, y al revés.</td></tr><tr><td><strong>Git y GitHub</strong></td><td>Historia del proyecto, trabajo en equipo sin pisarse, y evidencia de tu aporte individual.</td></tr><tr><td><strong>VS Code</strong></td><td>Archivos <code>.py</code> y notebooks en la misma ventana, con depurador.</td></tr><tr><td><strong>Pruebas automáticas</strong></td><td>La red de seguridad. En este módulo son especialmente importantes: ver abajo.</td></tr></tbody></table></div>
+<h3 class="sub-t">Cómo vamos a organizar el código, y por qué</h3>
+<p class="cuerpo">Conviene explicar la razón antes que la regla, porque la regla por sí sola puede parecer arbitraria.</p>
+<p class="cuerpo">En la mayoría de los programas, un error se manifiesta: el programa se detiene, aparece un mensaje, algo deja de funcionar. <strong>En aprendizaje por refuerzo, un error de programación no siempre impide que el entrenamiento se complete.</strong> El programa puede ejecutarse sin advertencias y producir resultados que, a simple vista, parecen razonables.</p>
+<p class="cuerpo">Un signo cambiado en la recompensa, un estado final mal manejado o una condición de parada equivocada no detienen nada: el agente termina su entrenamiento y devuelve una curva de aprendizaje con buen aspecto. Simplemente aprendió peor de lo que debía, y nada en la pantalla lo advierte.</p>
+<p class="cuerpo">Esto tiene una consecuencia directa sobre cómo hay que trabajar. Si no podemos confiar en que el programa avise cuando algo está mal, necesitamos otras formas de detectarlo: código organizado en piezas pequeñas que se puedan revisar por separado, pruebas automáticas que comprueben cada pieza, configuración registrada en archivos en lugar de escrita dentro del código, y experimentos que cualquiera pueda repetir y obtener el mismo resultado. Sin eso, un error puede pasar inadvertido durante semanas.</p>
+<div class="callout clave">
+        <p class="callout-t">La regla de trabajo del curso</p>
+        <p class="callout-c">Los <strong>algoritmos y componentes reutilizables</strong> viven en módulos de Python, dentro de <code>src/</code>, con sus pruebas en <code>tests/</code>. Los <strong>notebooks</strong> se usan para explorar datos, analizar resultados, visualizar y documentar el razonamiento. Un notebook importa un agente desde el paquete; no lo define. En la práctica: si algo se va a ejecutar más de una vez, corresponde a un módulo.</p>
+      </div>
+<p class="cuerpo">Esto no significa que los notebooks sean una herramienta inferior. Cumplen un propósito distinto y muy valioso: permiten inspeccionar un resultado intermedio, probar una idea en segundos, ver una gráfica junto al razonamiento que la explica. Ese trabajo exploratorio es parte esencial del método y lo haremos en notebooks durante todo el curso. Lo que no funciona bien es guardar en una celda el código del que después van a depender los resultados del proyecto.</p>
+<p class="cuerpo">Abre <code>notebooks/00-bienvenida.ipynb</code> en VS Code y ejecútalo entero cuando tengas un rato. No hay que entregar nada: es para que veas cómo funciona esa separación en la práctica, y para que el viernes 28 el entorno ya te resulte familiar.</p>
+<hr class="sep">
+<h2 id="s13" class="sec-t"><span class="sec-n">13</span>Para seguir</h2>
+<ol class="refs"><li><strong>N2 · Git para trabajar en equipo.</strong> Ramas, <em>pull requests</em> y resolución de conflictos. Obligatorio; se reutiliza del tutorial de Git del programa.</li><li><strong>N3 · Python y NumPy para RL.</strong> Seis ejercicios de vectorización tomados de operaciones que aparecerán de verdad en el curso.</li><li><strong>N4 · Matemática justa.</strong> Esperanza condicional, ley de la esperanza total y series geométricas. Es la pieza que más rinde si hace tiempo que no tocas probabilidad.</li><li>Documentación oficial de uv: <a href="https://docs.astral.sh/uv/">docs.astral.sh/uv</a></li></ol>
+  </main>
+</div>
+
+<footer class="doc-pie">
+  <span>Universidad Pedagógica y Tecnológica de Colombia · Especialización en Inteligencia Artificial</span>
+  <span>Bloque 0 · N1 · Preparación</span>
+</footer>
+
+<script>
+// Pestanas de plataforma
+document.querySelectorAll('.pl-tab').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var g = btn.dataset.g, k = btn.dataset.k;
+    document.querySelectorAll('.pl-tab[data-g="'+g+'"]').forEach(function(b){ b.classList.toggle('on', b===btn); });
+    document.querySelectorAll('.pl-pan[data-g="'+g+'"]').forEach(function(p){ p.classList.toggle('on', p.dataset.k===k); });
+    try { localStorage.setItem('uptc-plataforma', k); } catch(e){}
+  });
+});
+try {
+  var pref = localStorage.getItem('uptc-plataforma');
+  if (pref) document.querySelectorAll('.pl-tab[data-k="'+pref+'"]').forEach(function(b){ b.click(); });
+} catch(e){}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer>window.addEventListener('load',function(){
+  if(!window.katex) return;
+  document.querySelectorAll('[data-tex]').forEach(function(el){
+    try { katex.render(el.dataset.tex, el, {throwOnError:false, displayMode: el.classList.contains('eq-tex')}); } catch(e){}
+  });
+});</script>
+</body>
+</html>
