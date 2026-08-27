@@ -1,12 +1,12 @@
 {
   "modulo": "Aprendizaje por Refuerzo y Sistemas de Recomendacion",
   "prueba": "Bloque 0 / N1",
-  "fecha": "2026-08-24T01:41:03+00:00",
+  "fecha": "2026-08-27T15:24:25+00:00",
   "sistema": "Windows 11 (AMD64)",
   "python": "3.12.14",
-  "superadas": 7,
+  "superadas": 8,
   "total": 8,
-  "codigo": "UPTC-RL-NO-78-ECB91B",
+  "codigo": "UPTC-RL-OK-88-EEF195",
   "detalle": [
     {
       "n": 1,
@@ -18,7 +18,7 @@
       "n": 2,
       "titulo": "Entorno virtual del proyecto activo",
       "ok": true,
-      "detalle": "interprete en C:\\Users\\Usuario\\Downloads\\entrega\\plantilla-repo\\.venv  (es el .venv del proyecto)"
+      "detalle": "interprete en C:\\Users\\monic\\Documents\\rl-recsys-monicavelasco01-cloud\\.venv  (es el .venv del proyecto)"
     },
     {
       "n": 3,
@@ -48,13 +48,13 @@
       "n": 7,
       "titulo": "Git instalado y configurado",
       "ok": true,
-      "detalle": "git version 2.53.0.windows.1 · JeolUPTC <jorge.otalora@uptc.edu.co>"
+      "detalle": "git version 2.55.0.windows.5 · MÃ³nica Alejandra Velasco Segura <monica.velasco01@uptc.edu.co>"
     },
     {
       "n": 8,
       "titulo": "El repositorio esta clonado y con remoto",
-      "ok": false,
-      "detalle": "esta carpeta no es un repositorio git"
+      "ok": true,
+      "detalle": "rama 'main' · 1 commits · remoto https://github.com/monicavelasco01-cloud/rl-recsys-monicavelasco01-cloud.git"
     }
   ]
 }
