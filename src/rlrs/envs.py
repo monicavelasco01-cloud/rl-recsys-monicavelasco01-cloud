@@ -178,3 +178,35 @@ class GridWorld:
                     cells.append(f"{values[idx]:+.2f}{arrow} ")
             lines.append(" ".join(cells))
         return "\n".join(lines)
+
+
+def acantilado(n_cols: int = 12, castigo: float = -100.0) -> GridWorld:
+    """El mundo del acantilado, la variante clasica de Sutton y Barto 6.6.
+
+    Una rejilla 4 x ``n_cols`` sin muros ni ruido. El agente sale de la esquina
+    inferior izquierda y la meta esta en la inferior derecha. Toda la fila de
+    abajo que hay entre medias es un precipicio: caer en el cuesta ``castigo``
+    y termina el episodio. Cada paso cuesta -1.
+
+    Existe para una sola pregunta, la de la sesion 2: SARSA y Q-learning
+    aprenden politicas distintas aqui, y cual de las dos es "mejor" depende de
+    si el agente va a seguir explorando o no.
+
+    Notes
+    -----
+    En esta variante la meta entrega recompensa ``0``, no positiva, asi que el
+    indicador de exito del arnes de evaluacion no aplica: lo que hay que mirar
+    es el retorno, que aqui siempre es negativo y mide cuanto costo llegar.
+    """
+    terminales = {(3, j): castigo for j in range(1, n_cols - 1)}
+    terminales[(3, n_cols - 1)] = 0.0
+    return GridWorld(
+        n_rows=4,
+        n_cols=n_cols,
+        walls=set(),
+        terminals=terminales,
+        start=(3, 0),
+        step_reward=-1.0,
+        noise=0.0,
+        max_steps=200,
+    )

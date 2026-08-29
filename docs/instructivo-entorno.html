@@ -151,7 +151,7 @@ a{color:var(--slate);}
     <span class="marca-sep" aria-hidden="true"></span>
     <div class="ident">
       <span class="ident-curso">Aprendizaje por Refuerzo y Sistemas de Recomendación</span>
-      <span class="ident-unidad">Bloque 0 · N1 · Prepara tu entorno</span>
+      <span class="ident-unidad">Bloque 0 · P1 · Prepara tu entorno</span>
     </div>
     <a class="volver" href="../../index.html"><span aria-hidden="true">&#8592;</span><span class="volver-txt">Inicio del curso</span></a>
   </div>
@@ -159,7 +159,7 @@ a{color:var(--slate);}
 
 <div class="portada">
   <div class="portada-in">
-    <p class="eyebrow">Bloque 0 · N1 · Preparación</p>
+    <p class="eyebrow">Bloque 0 · P1 · Preparación</p>
     <h1>Prepara tu entorno de trabajo</h1>
     <p class="doc-sub">Antes del viernes 28 de agosto</p>
     <p class="doc-lead">Instalar Python, Git y el editor; crear tu repositorio del curso; y comprobar con una sola orden que todo funciona. Cuando el verificador muestre <strong>8 de 8</strong>, estás listo. La primera sesión empieza con contenido, no con instalaciones.</p>
@@ -174,6 +174,7 @@ a{color:var(--slate);}
       <ul><li><strong>Instalar</strong> <code>uv</code>, la herramienta que gestiona Python, el entorno virtual y las dependencias con un solo comando.</li><li><strong>Configurar</strong> Git con tu identidad, para que tus aportes al proyecto queden correctamente atribuidos.</li><li><strong>Conectar</strong> tu cuenta de GitHub y <strong>crear</strong> tu repositorio personal del curso a partir de la plantilla.</li><li><strong>Ejecutar</strong> las pruebas automáticas del proyecto y ver la salida esperada.</li><li><strong>Superar</strong> la prueba de paso y dejar constancia de ello en tu repositorio.</li></ul>
     </section>
     <h2 id="s1" class="sec-t"><span class="sec-n">1</span>Antes de empezar</h2>
+<p class="cuerpo"><strong>P1</strong> es el primero de los cuatro módulos de preparación del Bloque 0, y el único que hay que completar antes de la primera sesión: sin el entorno funcionando no se puede trabajar. Los otros tres (P2 Git, P3 Python y NumPy, P4 matemática) sirven para actualizar prerrequisitos y se pueden recorrer también durante el módulo.</p>
 <p class="cuerpo">Este instructivo tiene dos recorridos. Si ya trabajas habitualmente con Python, Git y un editor, te llevará unos <strong>45 minutos</strong> y buena parte serán comprobaciones. Si vas a instalar estas herramientas por primera vez, o hace tiempo que no lo haces, calcula <strong>entre dos y tres horas</strong> y hazlo con calma: no hay ninguna prisa y el resultado es el mismo.</p>
 <p class="cuerpo">Lo único que importa es llegar al viernes 28 con la prueba de paso superada. Si te atascas, escribe al canal del curso con el mensaje de error completo: casi todos los problemas de instalación son de cinco minutos cuando alguien más los ha visto antes.</p>
 <div class="callout clave">
@@ -233,7 +234,7 @@ git config --get user.email</code></pre></div>
   - Git operations protocol: https</pre></div>
 <h2 id="s7" class="sec-t"><span class="sec-n">7</span>Crear tu repositorio del curso</h2>
 <p class="cuerpo">Conviene entender primero cómo están organizados los repositorios del módulo, porque hay tres cosas distintas y es fácil confundirlas:</p>
-<div class="tabla-wrap"><table><thead><tr><th>Repositorio</th><th>De quién es</th><th>Para qué</th></tr></thead><tbody><tr><td><strong>Plantilla del curso</strong></td><td>Del docente. Tú solo lo lees.</td><td>Contiene el punto de partida: el paquete, las pruebas y los guiones. Nunca escribes en él.</td></tr><tr><td><strong>Tu repositorio personal</strong></td><td>Tuyo. Lo creas en este paso.</td><td>Es donde haces el Bloque 0 y tus ejercicios individuales. Aquí subes la evidencia de N1.</td></tr><tr><td><strong>Repositorio del equipo</strong></td><td>Del equipo. Se crea en la sesión 1.</td><td>Ahí vive el proyecto del módulo. Todavía no existe, y no hace falta para N1.</td></tr></tbody></table></div><p class="tabla-nota">En este paso creas <strong>el tuyo personal</strong>, a partir de la plantilla. Los equipos aún no están conformados, así que el repositorio de equipo llegará más adelante.</p>
+<div class="tabla-wrap"><table><thead><tr><th>Repositorio</th><th>De quién es</th><th>Para qué</th></tr></thead><tbody><tr><td><strong>Plantilla del curso</strong></td><td>Del docente. Tú solo lo lees.</td><td>Contiene el punto de partida: el paquete, las pruebas y los guiones. Nunca escribes en él.</td></tr><tr><td><strong>Tu repositorio personal</strong></td><td>Tuyo. Lo creas en este paso.</td><td>Es donde haces el Bloque 0 y tus ejercicios individuales. Aquí subes la evidencia de P1.</td></tr><tr><td><strong>Repositorio del equipo</strong></td><td>Del equipo. Se crea en la sesión 1.</td><td>Ahí vive el proyecto del módulo. Todavía no existe, y no hace falta para P1.</td></tr></tbody></table></div><p class="tabla-nota">En este paso creas <strong>el tuyo personal</strong>, a partir de la plantilla. Los equipos aún no están conformados, así que el repositorio de equipo llegará más adelante.</p>
 <h3 class="sub-t">Crear tu copia a partir de la plantilla</h3>
       <ol class="pasos"><li><div class="paso-c"><p class="cuerpo">Abre la plantilla del curso en el navegador, con tu sesión de GitHub iniciada: <a href="https://github.com/JeolUPTC/curso-rl-recsys">github.com/JeolUPTC/curso-rl-recsys</a></p></div></li><li><div class="paso-c"><p class="cuerpo">Pulsa el botón verde <strong>Use this template</strong> (arriba a la derecha) y elige <strong>Create a new repository</strong>. No uses <em>Fork</em> ni <em>Code → Download ZIP</em>.</p></div></li><li><div class="paso-c"><p class="cuerpo">Como propietario deja <strong>tu propia cuenta</strong>. Ponle de nombre <code>rl-recsys-tu-usuario</code>, sustituyendo <code>tu-usuario</code> por tu nombre de usuario de GitHub. Déjalo <strong>Public</strong> y pulsa <strong>Create repository</strong>.</p><div class="callout info">
         <p class="callout-t">¿Público o privado?</p>
@@ -269,7 +270,7 @@ cd rl-recsys-tu-usuario</code></pre></div></div></li></ol>
 <p class="cuerpo">Este guion comprueba las ocho condiciones necesarias para empezar el módulo y te dice exactamente cuál falla y cómo resolverla. No modifica nada, así que puedes ejecutarlo tantas veces como quieras:</p>
 <div class="cod"><pre><code>uv run python scripts/verificar.py</code></pre></div>
 <div class="cod"><div class="cod-cab"><span class="cod-arch">Salida esperada cuando todo está listo</span><span class="cod-len">text</span></div><pre><code>  UPTC · Especializacion en Inteligencia Artificial
-  Bloque 0 · N1 · Prueba de paso del entorno
+  Bloque 0 · P1 · Prueba de paso del entorno
   ----------------------------------------------------------------
 
  [ OK  ]  1. Python instalado y con version suficiente
@@ -295,8 +296,8 @@ git commit -m &quot;Entorno verificado&quot;
 git push</code></pre></div>
 <div class="actividad">
         <div class="act-cab"><span class="act-num">Actividad 1</span><span class="act-meta">Antes del 28 de agosto</span></div>
-        <h4 class="act-t">Entrega de N1</h4>
-        <div class="act-c"><p>Cuando el verificador muestre 8 de 8 y hayas subido el archivo, entra a Moodle y responde el cuestionario <strong>«N1 · Entorno listo»</strong> con dos datos: el <strong>código de verificación</strong> que te mostró la pantalla y la <strong>dirección de tu repositorio</strong> (<code>https://github.com/tu-usuario/rl-recsys-tu-usuario</code>).</p></div>
+        <h4 class="act-t">Entrega de P1</h4>
+        <div class="act-c"><p>Cuando el verificador muestre 8 de 8 y hayas subido el archivo, entra a Moodle y responde el cuestionario <strong>«P1 · Entorno listo»</strong> con dos datos: el <strong>código de verificación</strong> que te mostró la pantalla y la <strong>dirección de tu repositorio</strong> (<code>https://github.com/tu-usuario/rl-recsys-tu-usuario</code>).</p></div>
         <ul class="lista"><li>El código confirma que las ocho comprobaciones pasaron.</li><li>El archivo en tu repositorio es la evidencia real, con la fecha y las características de tu equipo.</li><li>Si creaste el repositorio como privado, comprueba que añadiste a <code>JeolUPTC</code> como colaborador; de lo contrario será invisible para el docente.</li><li>Si no llegas a tiempo, avisa igualmente: es mucho mejor resolverlo el jueves que el viernes a las seis de la tarde.</li></ul>
       </div>
 <h2 id="s11" class="sec-t"><span class="sec-n">11</span>Si algo falla</h2>
@@ -316,13 +317,13 @@ git push</code></pre></div>
 <p class="cuerpo">Abre <code>notebooks/00-bienvenida.ipynb</code> en VS Code y ejecútalo entero cuando tengas un rato. No hay que entregar nada: es para que veas cómo funciona esa separación en la práctica, y para que el viernes 28 el entorno ya te resulte familiar.</p>
 <hr class="sep">
 <h2 id="s13" class="sec-t"><span class="sec-n">13</span>Para seguir</h2>
-<ol class="refs"><li><strong>N2 · Git para trabajar en equipo.</strong> Ramas, <em>pull requests</em> y resolución de conflictos. Obligatorio; se reutiliza del tutorial de Git del programa.</li><li><strong>N3 · Python y NumPy para RL.</strong> Seis ejercicios de vectorización tomados de operaciones que aparecerán de verdad en el curso.</li><li><strong>N4 · Matemática justa.</strong> Esperanza condicional, ley de la esperanza total y series geométricas. Es la pieza que más rinde si hace tiempo que no tocas probabilidad.</li><li>Documentación oficial de uv: <a href="https://docs.astral.sh/uv/">docs.astral.sh/uv</a></li></ol>
+<ol class="refs"><li><strong>P2 · Git para trabajar en equipo.</strong> Ramas, <em>pull requests</em> y resolución de conflictos. Obligatorio; se reutiliza del tutorial de Git del programa.</li><li><strong>P3 · Python y NumPy para RL.</strong> Seis ejercicios de vectorización tomados de operaciones que aparecerán de verdad en el curso.</li><li><strong>P4 · Matemática justa.</strong> Esperanza condicional, ley de la esperanza total y series geométricas. Es la pieza que más rinde si hace tiempo que no tocas probabilidad.</li><li>Documentación oficial de uv: <a href="https://docs.astral.sh/uv/">docs.astral.sh/uv</a></li></ol>
   </main>
 </div>
 
 <footer class="doc-pie">
   <span>Universidad Pedagógica y Tecnológica de Colombia · Especialización en Inteligencia Artificial</span>
-  <span>Bloque 0 · N1 · Preparación</span>
+  <span>Bloque 0 · P1 · Preparación</span>
 </footer>
 
 <script>

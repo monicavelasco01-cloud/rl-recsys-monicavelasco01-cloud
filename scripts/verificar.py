@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Prueba de paso del Bloque 0 - N1.
+"""Prueba de paso del Bloque 0 - P1.
 
 Comprueba, una por una, las ocho condiciones que hacen falta para empezar el
 modulo, y escribe ``entorno_verificado.json`` con el resultado.
@@ -161,7 +161,7 @@ def main() -> int:
     print()
     print(f"{NEGRITA}  UPTC · Especializacion en Inteligencia Artificial{FIN}")
     print("  Aprendizaje por Refuerzo y Sistemas de Recomendacion")
-    print(f"  {GRIS}Bloque 0 · N1 · Prueba de paso del entorno{FIN}")
+    print(f"  {GRIS}Bloque 0 · P1 · Prueba de paso del entorno{FIN}")
     print("  " + "-" * ANCHO)
     print()
 
@@ -191,7 +191,7 @@ def main() -> int:
 
     informe = {
         "modulo": "Aprendizaje por Refuerzo y Sistemas de Recomendacion",
-        "prueba": "Bloque 0 / N1",
+        "prueba": "Bloque 0 / P1",
         "fecha": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "sistema": f"{platform.system()} {platform.release()} ({platform.machine()})",
         "python": platform.python_version(),
