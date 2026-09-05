@@ -1,7 +1,7 @@
 {
   "modulo": "Aprendizaje por Refuerzo y Sistemas de Recomendacion",
-  "prueba": "Bloque 0 / N1",
-  "fecha": "2026-08-27T15:24:25+00:00",
+  "prueba": "Bloque 0 / P1",
+  "fecha": "2026-08-29T04:33:27+00:00",
   "sistema": "Windows 11 (AMD64)",
   "python": "3.12.14",
   "superadas": 8,
@@ -42,7 +42,7 @@
       "n": 6,
       "titulo": "Las pruebas automaticas pasan",
       "ok": true,
-      "detalle": "..........................                                               [100%]"
+      "detalle": ".......................................................                  [100%]"
     },
     {
       "n": 7,
@@ -54,7 +54,7 @@
       "n": 8,
       "titulo": "El repositorio esta clonado y con remoto",
       "ok": true,
-      "detalle": "rama 'main' · 1 commits · remoto https://github.com/monicavelasco01-cloud/rl-recsys-monicavelasco01-cloud.git"
+      "detalle": "rama 'main' · 3 commits · remoto https://github.com/monicavelasco01-cloud/rl-recsys-monicavelasco01-cloud.git"
     }
   ]
 }

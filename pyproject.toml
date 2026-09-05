@@ -30,6 +30,9 @@ packages = ["src/rlrs"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+# ``retos/`` no es un paquete instalado: es donde el estudiante escribe sus
+# respuestas. Sin esta linea, las pruebas de los retos no lo encuentran.
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 100

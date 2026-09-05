@@ -97,6 +97,13 @@ uv run ruff check .                        # revisar el estilo
 uv run ruff format .                       # formatear
 uv run python experiments/run.py           # correr el experimento base
 uv run python scripts/verificar.py         # prueba de paso del entorno
+uv run python scripts/reto3.py             # reto de la sesion 3
+uv run pytest tests/test_reto3.py          # el contrato del reto 3
+uv run python experiments/profundo.py      # sesion 4: DQN y gradiente de politica
+uv run python experiments/dqn_torch.py     # el mismo DQN, en PyTorch
+uv run python scripts/reto4.py             # reto de la sesion 4
+uv run pytest tests/test_reto4.py          # el contrato del reto 4
+uv run python experiments/meridiano.py     # la linea base del proyecto
 uv run jupyter lab                         # abrir los notebooks
 ```
 

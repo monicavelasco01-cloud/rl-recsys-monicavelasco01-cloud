@@ -210,3 +210,42 @@ def acantilado(n_cols: int = 12, castigo: float = -100.0) -> GridWorld:
         noise=0.0,
         max_steps=200,
     )
+
+
+def sala_escasa(
+    n_rows: int = 8,
+    n_cols: int = 12,
+    noise: float = 0.1,
+    step_reward: float = -0.01,
+    max_steps: int = 300,
+) -> GridWorld:
+    """Una sala grande con una sola recompensa, muy lejos.
+
+    Rejilla 8 x 12 sin muros. El agente sale de la esquina inferior izquierda y
+    la unica casilla terminal es la superior derecha, que entrega ``+1``. Cada
+    paso cuesta ``-0,01``, lo justo para que prefiera caminos cortos sin que ese
+    coste sea por si mismo una pista de por donde ir.
+
+    Existe porque la cuadricula de las sesiones 1 y 2 es demasiado pequena para
+    plantear el problema de la sesion 3. Con veinte casillas, un agente que se
+    mueve al azar tropieza con la meta enseguida y no hace falta ayudarle. Con
+    noventa y seis y un camino minimo de diecisiete pasos, la exploracion al
+    azar tarda de verdad, y ahi si tiene sentido preguntarse si conviene darle
+    una pista y que puede salir mal.
+
+    Notes
+    -----
+    El camino optimo son 17 pasos, asi que el retorno de una politica perfecta
+    ronda ``+0,83``. Un agente que nunca encuentra la meta se queda en ``-3,00``,
+    que es el coste de agotar los 300 pasos.
+    """
+    return GridWorld(
+        n_rows=n_rows,
+        n_cols=n_cols,
+        walls=set(),
+        terminals={(0, n_cols - 1): 1.0},
+        start=(n_rows - 1, 0),
+        step_reward=step_reward,
+        noise=noise,
+        max_steps=max_steps,
+    )
