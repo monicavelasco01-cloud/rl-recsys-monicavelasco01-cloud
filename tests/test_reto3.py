@@ -97,3 +97,4 @@ def test_acercarse_vale_mas_que_alejarse():
         f"Acercarse paga {hacia:+.4f} y alejarse paga {lejos:+.4f}. "
         "Su pista no distingue una direccion de la otra."
     )
+
