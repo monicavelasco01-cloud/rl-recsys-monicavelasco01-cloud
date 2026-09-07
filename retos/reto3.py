@@ -55,7 +55,31 @@ def mi_moldeado(
     anterior: tuple[int, int] | None,
     siguiente: tuple[int, int],
     terminal: bool,
-) -> float:
-    """La recompensa extra de una transicion. **Esto es lo que usted escribe.**"""
-    # ── su respuesta va aqui ──────────────────────────────────────────────
-    return 0.0
+):
+    """
+    Moldeado de recompensa basado en potenciales (Potential-Based Reward Shaping)
+    conforme a la teoría de Ng, Harada & Russell (1999).
+    
+    Conceptualmente mapea la reducción del vacío de conocimiento (distancia a la meta)
+    evitando que el agente explote el sistema quedándose en bucles locales.
+    """
+    # 1. Obtenemos las distancias al objetivo (nuestro vacío de conocimiento)
+    dist_anterior = pasos_hasta_la_meta(anterior)
+    dist_siguiente = pasos_hasta_la_meta(siguiente)
+    
+    # 2. Definimos las funciones de potencial de estado Phi(s)
+    # A menor distancia, mayor potencial (menos negativo).
+    phi_anterior = -float(dist_anterior)
+    phi_siguiente = -float(dist_siguiente)
+    
+    # 3. Factor de descuento del GridWorld
+    gamma = 0.9
+    
+    # 4. Formulamos el shaping: F = gamma * Phi(s') - Phi(s)
+    # Si es un estado terminal (llegó a la meta), el potencial futuro es 0 por definición.
+    if terminal:
+        shaping = 0.0 - phi_anterior
+    else:
+        shaping = (gamma * phi_siguiente) - phi_anterior
+        
+    return shaping
