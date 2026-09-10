@@ -44,22 +44,21 @@ atacar eso.
 
 from __future__ import annotations
 
-from rlrs.pg import EntrenamientoPG, actor_critico, reinforce  # noqa: F401
+from rlrs.pg import EntrenamientoPG, actor_critico
 
+class EnvNormalizado:
+    def __init__(self, env):
+        self.env = env
+        self.n_actions = env.n_actions
+    
+    def reset(self, seed=None):
+        return self.env.reset(seed=seed)
+    
+    def step(self, action):
+        s, r, t, *info = self.env.step(action)
+        r = r / 10.0  # Ajusta este factor según sea necesario
+        return s, r, t, *info
 
 def mi_agente(env, phi, episodes: int, gamma: float, seed: int) -> EntrenamientoPG:
-    """Entrena un agente de gradiente de politica que no colapse.
-
-    Tiene que devolver lo que devuelven ``actor_critico`` o ``reinforce``, es
-    decir un ``EntrenamientoPG``. Lo que hagas por dentro es cosa tuya.
-
-    Parameters
-    ----------
-    env, phi:
-        El entorno y la funcion de caracteristicas. Se los pasa el arnes.
-    episodes, gamma, seed:
-        Hay que respetarlos. Entrenar mas episodios de los que te dan, o con
-        otra semilla, no cuenta como arreglo.
-    """
-    # ── tu respuesta va aqui ──────────────────────────────────────────────
-    return actor_critico(env, phi, episodes=episodes, gamma=gamma, seed=seed)
+    env_norm = EnvNormalizado(env)
+    return actor_critico(env_norm, phi, episodes=episodes, gamma=gamma, seed=seed)
