@@ -85,10 +85,26 @@ class ModeloPFA:
     gamma: np.ndarray     # cuanto ensena un acierto
     rho: np.ndarray       # cuanto ensena un fallo
     nombres: dict[int, str]
+    # Cuantas interacciones tiene cada habilidad en los datos. Hace falta para
+    # elegir el catalogo: una habilidad sin datos tiene los tres parametros en
+    # cero, o sea probabilidad 0,5 fija que no se mueve con la practica. Es un
+    # brazo muerto, y hasta septiembre de 2026 habia uno dentro del catalogo.
+    n_datos: np.ndarray | None = None
 
     @property
     def n_habilidades(self) -> int:
         return self.beta.size
+
+    def catalogo_por_frecuencia(self, cuantas: int) -> np.ndarray:
+        """Las ``cuantas`` habilidades con mas interacciones, en orden de indice.
+
+        Sin datos de frecuencia se devuelven las primeras por indice, que es lo
+        que se hacia antes y es lo que hay que evitar.
+        """
+        if self.n_datos is None:
+            return np.arange(cuantas)
+        elegidas = np.argsort(self.n_datos)[::-1][:cuantas]
+        return np.sort(elegidas)
 
     def probabilidad(self, habilidad: int, aciertos: float, fallos: float) -> float:
         z = self.beta[habilidad] + self.gamma[habilidad] * aciertos + self.rho[habilidad] * fallos
@@ -104,13 +120,16 @@ class ModeloPFA:
             "beta": self.beta.tolist(), "gamma": self.gamma.tolist(),
             "rho": self.rho.tolist(),
             "nombres": {str(k): v for k, v in self.nombres.items()},
+            "n_datos": None if self.n_datos is None else self.n_datos.tolist(),
         }))
 
     @classmethod
     def cargar(cls, ruta: Path) -> "ModeloPFA":
         d = json.loads(Path(ruta).read_text())
+        nd = d.get("n_datos")
         return cls(np.array(d["beta"]), np.array(d["gamma"]), np.array(d["rho"]),
-                   {int(k): v for k, v in d["nombres"].items()})
+                   {int(k): v for k, v in d["nombres"].items()},
+                   None if nd is None else np.array(nd))
 
 
 def _rasgos(seqs, n_habilidades: int):
@@ -155,7 +174,14 @@ def ajustar_pfa(raiz: Path = RAIZ_DATOS, pasos: int = 400, lr: float = 0.05) -> 
         gamma -= lr * np.bincount(H, weights=error * A, minlength=K) / cuenta
         rho -= lr * np.bincount(H, weights=error * F, minlength=K) / cuenta
 
-    return ModeloPFA(beta, gamma, rho, nombres_de_habilidades(crudo / "skills.tsv"))
+    # Las interacciones se cuentan sobre entrenamiento y prueba: la eleccion
+    # del catalogo es una decision de diseno del entorno, no una medicion, asi
+    # que no hay fuga por mirar cuantos datos hay en cada habilidad.
+    todas = np.concatenate([h for h, _ in entrena + prueba])
+    n_datos = np.bincount(todas, minlength=K)
+
+    return ModeloPFA(beta, gamma, rho, nombres_de_habilidades(crudo / "skills.tsv"),
+                     n_datos=n_datos)
 
 
 def calidad(modelo: ModeloPFA, raiz: Path = RAIZ_DATOS) -> dict[str, float]:
@@ -202,7 +228,13 @@ class Meridiano:
         ``"dominio"`` da la mejora de dominio medio que produjo la interaccion.
         Premia ensenar, no acertar.
     n_pasos:
-        Ejercicios por episodio.
+        Ejercicios por episodio. **200, y el numero importa.** Con 50 el
+        episodio es tan corto que la mejor politica es machacar una sola
+        habilidad: la lleva a probabilidad 0,996 y saca mas que repartir. A
+        partir de 100 ejercicios eso se satura, porque de una habilidad ya
+        dominada no queda nada que sacar, y repartir gana con holgura. Es el
+        mismo efecto del horizonte que se estudia con bandidos en la sesion 5,
+        escondido dentro del proyecto. Estuvo en 50 hasta septiembre de 2026.
     catalogo:
         Cuantas habilidades entran. Con ``None`` entran las 110. Reducirlo hace
         el problema manejable para una linea base tabular.
@@ -219,7 +251,7 @@ class Meridiano:
         self,
         modelo: ModeloPFA,
         recompensa: Literal["aciertos", "dominio"] = "dominio",
-        n_pasos: int = 50,
+        n_pasos: int = 200,
         catalogo: int | None = 20,
     ) -> None:
         if recompensa not in ("aciertos", "dominio"):
@@ -228,9 +260,13 @@ class Meridiano:
         self.recompensa = recompensa
         self.n_pasos = n_pasos
 
-        # Las habilidades mas frecuentes primero: con un catalogo reducido
-        # interesa quedarse con aquellas de las que hay datos suficientes.
-        self.habilidades = np.arange(modelo.n_habilidades if catalogo is None else catalogo)
+        # Las habilidades con MAS DATOS primero. Esto antes decia lo mismo en el
+        # comentario y hacia `np.arange(catalogo)`, que coge los indices 0 a 19
+        # sin mirar nada: dentro caia la habilidad 0, que no tiene ni una sola
+        # interaccion en el conjunto y por tanto es un brazo muerto. Corregido
+        # en septiembre de 2026; el fallo esta contado en la sesion 5.
+        self.habilidades = (np.arange(modelo.n_habilidades) if catalogo is None
+                            else modelo.catalogo_por_frecuencia(catalogo))
         self.n_actions = len(self.habilidades)
         self.n_caracteristicas = 2 * self.n_actions
 
@@ -244,11 +280,20 @@ class Meridiano:
         return np.concatenate([self._aciertos, self._fallos])
 
     def dominio(self) -> float:
-        """Probabilidad media de acertar sobre el catalogo. Es lo que se quiere subir."""
-        p = self.modelo.probabilidades(
-            np.pad(self._aciertos, (0, self.modelo.n_habilidades - self.n_actions)),
-            np.pad(self._fallos, (0, self.modelo.n_habilidades - self.n_actions)),
-        )
+        """Probabilidad media de acertar sobre el catalogo. Es lo que se quiere subir.
+
+        Ojo con los indices, que aqui hubo un fallo hasta septiembre de 2026:
+        ``self._aciertos`` esta indexado por ACCION (0 a 19) y el modelo por
+        HABILIDAD (0 a 110). Antes se rellenaba con ceros hasta 110 y se leia en
+        ``self.habilidades``, lo que solo funcionaba cuando el catalogo era
+        ``0..19`` y accion y habilidad coincidian. Con un catalogo elegido por
+        frecuencia dejaba de coincidir y el dominio no se movia nunca.
+        """
+        aciertos = np.zeros(self.modelo.n_habilidades)
+        fallos = np.zeros(self.modelo.n_habilidades)
+        aciertos[self.habilidades] = self._aciertos
+        fallos[self.habilidades] = self._fallos
+        p = self.modelo.probabilidades(aciertos, fallos)
         return float(p[self.habilidades].mean())
 
     # ── interfaz ───────────────────────────────────────────────────────────

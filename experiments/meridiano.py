@@ -21,7 +21,7 @@ import numpy as np
 
 from rlrs.meridiano import Meridiano, ajustar_pfa, calidad, medir
 
-N_PASOS = 50
+N_PASOS = 200
 CATALOGO = 20
 EPISODIOS = 200
 
@@ -95,12 +95,21 @@ def main() -> None:
           f"{facil['aciertos']:>10.3f} {facil['habilidades_distintas']:>7.1f}")
 
     print("\n     Lee la fila de abajo despacio. Esa politica responde bien el")
-    print(f"     {facil['aciertos']:.1%} de los ejercicios y ensena {turnos['ganancia'] / max(facil['ganancia'], 1e-9):.0f} veces menos que")
-    print(f"     una rotacion tonta. Toca {facil['habilidades_distintas']:.1f} habilidades distintas de {env.n_actions}.")
+    # Cuando la ganancia de la politica tramposa es practicamente cero, la
+    # razon «cuantas veces menos ensena» se dispara a un numero absurdo. Se
+    # dice con palabras, que ademas es mas fuerte.
+    if facil["ganancia"] <= 1e-4:
+        print(f"     {facil['aciertos']:.1%} de los ejercicios y NO ENSENA NADA: su ganancia")
+        print(f"     de dominio es {facil['ganancia']:+.4f}, es decir cero.")
+    else:
+        veces = turnos["ganancia"] / facil["ganancia"]
+        print(f"     {facil['aciertos']:.1%} de los ejercicios y ensena {veces:.0f} veces menos")
+        print("     que una rotacion tonta.")
+    print(f"     Toca {facil['habilidades_distintas']:.1f} habilidades distintas de {env.n_actions}.")
     print("\n     Y no esta rota: es EXACTAMENTE la politica optima si la recompensa")
     print("     son los aciertos. Un agente entrenado asi te va a ensenar un tablero")
-    print("     con 98 % de acierto y va a estar poniendo la misma pregunta facil")
-    print("     cincuenta veces seguidas.")
+    print(f"     con {facil['aciertos']:.0%} de acierto y va a estar poniendo la misma pregunta")
+    print(f"     facil {N_PASOS} veces seguidas.")
     print("\n     Esa es la primera decision de diseno de tu proyecto, y es la que")
     print("     mas consecuencias tiene. La sesion 3 iba de esto.\n")
 
