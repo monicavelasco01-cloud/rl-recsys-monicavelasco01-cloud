@@ -76,4 +76,4 @@ def mi_recomendador(particion: Particion):
         una lista de items ordenada de mejor a peor.
     """
     # ── su respuesta va aqui ──────────────────────────────────────────────
-    return knn_items(particion, vecinos=20)
+    return factorizacion_implicita(particion)
